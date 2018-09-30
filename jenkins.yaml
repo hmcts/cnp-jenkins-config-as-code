@@ -1,7 +1,7 @@
 jenkins:
   systemMessage: >-
     This jenkins is managed by configuration as code, update <a
-    href="https://github.com/hmcts/some-location">here</a>
+    href="https://github.com/hmcts/cnp-jenkins-config-as-code/blob/master/jenkins.yaml">here</a>
   markupFormatter:
     rawHtml:
       disableSyntaxHighlighting: false
