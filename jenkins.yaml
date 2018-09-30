@@ -1,0 +1,118 @@
+jenkins:
+  systemMessage: >-
+    This jenkins is managed by configuration as code, update <a
+    href="https://github.com/hmcts/some-location">here</a>
+  markupFormatter:
+    rawHtml:
+      disableSyntaxHighlighting: false
+  agentProtocols:
+    - JNLP4-connect
+    - Ping
+  crumbIssuer:
+    standard:
+      excludeClientIPFromCrumb: false
+  globalNodeProperties:
+    - envVars:
+        env:
+          - key: INFRA_VAULT_NAME
+            value: infra-vault-sandbox
+          - key: NONPROD_ENVIRONMENT_NAME
+            value: saat
+          - key: NONPROD_SUBSCRIPTION_NAME
+            value: sandbox
+          - key: PROD_ENVIRONMENT_NAME
+            value: sprod
+          - key: PROD_SUBSCRIPTION_NAME
+            value: sandbox
+  mode: NORMAL
+  numExecutors: 0
+  primaryView:
+    all:
+      name: all
+  slaveAgentPort: -1
+  views:
+    - buildMonitor:
+        includeRegex: >-
+          .+\/(bulk-scan-.*|draft-store|send-letter-service|cmc-pdf-service|feature-toggle-api|private-beta-invitation-service|service-auth-provider-app)\/master
+        name: Platform
+        recurse: true
+        title: Platform
+    - all:
+        name: all
+unclassified:
+  globallibraries:
+    libraries:
+      - defaultVersion: master
+        includeInChangesets: false
+        name: Infrastructure
+        retriever:
+          modernSCM:
+            scm:
+              github:
+                credentialsId: jenkins-reform-cnp
+                repoOwner: hmcts
+                repository: cnp-jenkins-library
+  sonarglobalconfiguration:
+    installations:
+      - additionalAnalysisProperties: sonar.organization=hmcts
+        name: SonarQube
+        serverAuthenticationToken: '${SONARCLOUD}'
+        serverUrl: 'https://sonarcloud.io'
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - usernamePassword:
+              scope: GLOBAL
+              id: jenkins-reform-cnp
+              username: jenkins-reform-cnp
+              password: '${JENKINS_REFORM_CNP}'
+jobs:
+  - script: |
+      Closure githubOrg(name) {
+        return {
+        organizationFolder("HMCTS_${name.toUpperCase()}") {
+        description("${name.capitalize()} team repositories")
+        displayName("HMCTS - ${name.capitalize()}")
+        triggers {
+            periodic(2400)
+        }
+        organizations {
+            github {
+                repoOwner("hmcts")
+                apiUri("https://api.github.com")
+                credentialsId("jenkins-reform-${name}")
+            }
+        }
+        projectFactories {
+            workflowMultiBranchProjectFactory {
+                // Relative location within the checkout of your Pipeline script.
+                scriptPath("Jenkinsfile_CNP")
+            }
+            workflowMultiBranchProjectFactory {
+                // Relative location within the checkout of your Pipeline script.
+                scriptPath("Jenkinsfile")
+            }
+        }
+        configure { node ->
+            def traits = node / navigators / 'org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator' / traits
+            traits << 'jenkins.scm.impl.trait.RegexSCMSourceFilterTrait' {
+                regex("${name}.*")
+            }
+            traits << 'jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait' {
+                includes('master demo cnp PR*')
+            }
+            traits << 'org.jenkinsci.plugins.github__branch__source.BranchDiscoveryTrait' {
+                strategyId(3)
+            }
+            traits << 'org.jenkinsci.plugins.github__branch__source.OriginPullRequestDiscoveryTrait' {
+                strategyId(1)
+            }
+        }
+          }
+        }
+      }
+
+      githubOrg('cmc').call()
+      githubOrg('cnp').call()
+      githubOrg('divorce').call()
