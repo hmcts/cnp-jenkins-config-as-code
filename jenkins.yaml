@@ -40,6 +40,9 @@ jenkins:
     - all:
         name: all
 unclassified:
+  location:
+    adminAddress: jenkins-reform@hmcts.net
+    url: 'https://build.platform.hmcts.net'
   globallibraries:
     libraries:
       - defaultVersion: master
