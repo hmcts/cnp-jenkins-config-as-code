@@ -61,6 +61,9 @@ unclassified:
         name: SonarQube
         serverAuthenticationToken: '${SONARCLOUD}'
         serverUrl: 'https://sonarcloud.io'
+  # slacknotifier:
+  #   teamDomain: hmcts-reform
+  #   tokenCredentialId: slack-token
 credentials:
   system:
     domainCredentials:
@@ -70,13 +73,36 @@ credentials:
               id: jenkins-reform-cnp
               username: jenkins-reform-cnp
               password: '${JENKINS_REFORM_CNP}'
+              description: CNP jenkins apo token
+          - string:
+              scope: GLOBAL
+              id: slack-token
+              secret: '${SLACK_TOKEN}'
+              description: Slack token
 jobs:
   - script: |
-      Closure githubOrg(name) {
+      def orgs = [
+        [name: 'cmc'],
+        [name: 'divorce', displayName: 'Divorce', regex: 'div.*'],
+        [name: 'cnp']
+      ]
+
+      orgs.each { org ->
+        githubOrg(org).call()
+      }
+
+      Closure githubOrg(Map args = [:]) {
+        def config = [
+          displayName     : args.name.toUpperCase(),
+          regex           : args.name + '.*',
+        ] << args
+
+        def name = config.name
+        
         return {
         organizationFolder("HMCTS_${name.toUpperCase()}") {
-        description("${name.capitalize()} team repositories")
-        displayName("HMCTS - ${name.capitalize()}")
+        description("${config.displayName} team repositories")
+        displayName("HMCTS - ${config.displayName}")
         triggers {
             periodic(2400)
         }
@@ -100,7 +126,7 @@ jobs:
         configure { node ->
             def traits = node / navigators / 'org.jenkinsci.plugins.github__branch__source.GitHubSCMNavigator' / traits
             traits << 'jenkins.scm.impl.trait.RegexSCMSourceFilterTrait' {
-                regex("${name}.*")
+                regex(config.regex)
             }
             traits << 'jenkins.scm.impl.trait.WildcardSCMHeadFilterTrait' {
                 includes('master demo cnp PR*')
@@ -115,7 +141,3 @@ jobs:
           }
         }
       }
-
-      githubOrg('cmc').call()
-      githubOrg('cnp').call()
-      githubOrg('divorce').call()
