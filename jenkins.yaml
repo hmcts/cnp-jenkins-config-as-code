@@ -29,16 +29,16 @@ jenkins:
   primaryView:
     all:
       name: all
-  securityRealm:
-    saml:
-      binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
-      groupsAttributeName: "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups"
-      idpMetadataConfiguration:
-        period: 15
-        url: "https://login.microsoftonline.com/hmcts.net/FederationMetadata/2007-06/FederationMetadata.xml"
-      maximumAuthenticationLifetime: 1209600
-      usernameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-      usernameCaseConversion: "none"
+  #securityRealm:
+    #saml:
+      #binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+      #groupsAttributeName: "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups"
+      #idpMetadataConfiguration:
+        #period: 15
+        #url: "https://login.microsoftonline.com/hmcts.net/FederationMetadata/2007-06/FederationMetadata.xml"
+      #maximumAuthenticationLifetime: 1209600
+      #usernameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
+      #usernameCaseConversion: "none"
   slaveAgentPort: -1
   views:
     - buildMonitor:
