@@ -52,7 +52,7 @@ jenkins:
 unclassified:
   location:
     adminAddress: jenkins-reform@hmcts.net
-    url: 'https://build.platform.hmcts.net'
+    url: 'http://timw-jenkins.service.core-compute-saat.internal'
   globallibraries:
     libraries:
       - defaultVersion: master

@@ -30,7 +30,7 @@ Master:
   #     value: "http://192.168.64.1:3128"
   ContainerEnv:
     - name: CASC_JENKINS_CONFIG
-      value: https://raw.githubusercontent.com/hmcts/cnp-jenkins-config-as-code/master/jenkins.yaml
+      value: https://raw.githubusercontent.com/hmcts/cnp-jenkins-config-as-code/timw/jenkins.yaml
   # Set min/max heap here if needed with:
   # JavaOpts: "-Xms512m -Xmx512m"
   # JenkinsOpts: ""
@@ -46,11 +46,11 @@ Master:
   # Use ClusterIP if your setup includes ingress controller
   ServiceType: ClusterIP
   # Master Service annotations
-  ServiceAnnotations:
-    kubernetes.io/ingress.class: traefik
+  #ServiceAnnotations:
+  #  kubernetes.io/ingress.class: traefik
   #   service.beta.kubernetes.io/aws-load-balancer-backend-protocol: https
   # Used to create Ingress record (should used with ServiceType: ClusterIP)
-  HostName: tim-build.platform.hmcts.net
+  HostName: timw-jenkins.service.core-compute-saat.internal
   # NodePort: <to set explicitly, choose port between 30000-32767
   # Enable Kubernetes Liveness and Readiness Probes
   # ~ 2 minutes to allow Jenkins to restart when upgrading plugins. Set ReadinessTimeout to be shorter than LivenessTimeout.
@@ -121,11 +121,11 @@ Master:
 
   Ingress:
     ApiVersion: extensions/v1beta1
-    Annotations: {}
-    # kubernetes.io/ingress.class: nginx
+    Annotations:
+      kubernetes.io/ingress.class: traefik
     # kubernetes.io/tls-acme: "true"
 
-    TLS:
+    #TLS:
     # - secretName: jenkins.cluster.local
     #   hosts:
     #     - jenkins.cluster.local
@@ -198,7 +198,7 @@ NetworkPolicy:
 
 ## Install Default RBAC roles and bindings
 rbac:
-  install: false
+  install: true
   serviceAccountName: default
   # Role reference
   roleRef: cluster-admin
