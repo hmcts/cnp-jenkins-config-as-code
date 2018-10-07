@@ -8,7 +8,6 @@ Master:
   UseSecurity: true
   AdminUser: admin
   AdminPassword: formetoknowforyoutofindout
-  JavaOpts: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
   resources:
     requests:
       cpu: 50m
