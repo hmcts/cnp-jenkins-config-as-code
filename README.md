@@ -48,3 +48,11 @@ To debug why your pod isn't starting:
 ```
 kubectl describe <pod name> --namespace jenkins
 ```
+
+To set a DNS record for ingress in __sandbox__ (from a bastion or Jenkins VM):
+```
+echo "{\"Name\":\"casc-jenkins\",\"Service\":\"casc-jenkins\",\"Address\":\"10.100.84.103\",\"Port\":80}" > casc-jenkins.json 
+
+curl --header "Content-Type: application/json" --request POST --data @casc-jenkins.json http://10.100.75.254:8500/v1/agent/service/register
+```
+The resulting FQDN will be `casc-jenkins.service.core-compute-saat.internal`
