@@ -48,3 +48,11 @@ To debug why your pod isn't starting:
 ```
 kubectl describe <pod name> --namespace jenkins
 ```
+
+To retrieve the secrets a secret is needed in the namespace of your jenkins
+The secret needs `get` permissions on any vaults that you are retrieving secrets from
+This only needs to be done once:
+```
+kubectl create secret generic kvcreds --from-literal clientid=<CLIENTID> --from-literal clientsecret=<CLIENTSECRET> --type=azure/kv --namespace jenkins
+```
+
