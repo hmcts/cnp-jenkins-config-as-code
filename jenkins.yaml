@@ -59,7 +59,7 @@ unclassified:
     installations:
       - additionalAnalysisProperties: sonar.organization=hmcts
         name: SonarQube
-        serverAuthenticationToken: '${SONARCLOUD}'
+        serverAuthenticationToken: '${sonarcloud}'
         serverUrl: 'https://sonarcloud.io'
 credentials:
   system:
@@ -69,18 +69,13 @@ credentials:
               scope: GLOBAL
               id: jenkins-reform-cnp
               username: jenkins-reform-cnp
-              password: '${JENKINS_REFORM_CNP}'
+              password: '${jenkins-reform-cnp}'
               description: CNP jenkins api token
           - string:
               scope: GLOBAL
               id: slack-token
               secret: '${slack-token}'
               description: Slack token
-          - string:
-              scope: GLOBAL
-              id: slack-token-2
-              secret: blah blah
-              description: Slack token 2
 jobs:
   - script: |
       def orgs = [
