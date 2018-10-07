@@ -22,9 +22,7 @@ Master:
   UsePodSecurityContext: true
   ServicePort: 8080
   ServiceType: ClusterIP
-  ServiceAnnotations:
-    kubernetes.io/ingress.class: traefik
-  HostName: tim-build.platform.hmcts.net
+  HostName: casc-jenkins.service.core-compute-saat.internal
   HealthProbes: true
   HealthProbesLivenessTimeout: 90
   HealthProbesReadinessTimeout: 60
@@ -51,8 +49,9 @@ Master:
   PodAnnotations: {}
   Ingress:
     ApiVersion: extensions/v1beta1
-    Annotations: {}
     TLS: null
+    Annotations:
+      kubernetes.io/ingress.class: traefik
 Agent:
   Enabled: false
   Image: jenkins/jnlp-slave
@@ -99,6 +98,6 @@ NetworkPolicy:
   ApiVersion: extensions/v1beta1
 rbac:
   install: true
-  serviceAccountName: default
+  serviceAccountName: casc-jenkins
   roleRef: cluster-admin
   roleBindingKind: ClusterRoleBinding
