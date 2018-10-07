@@ -1,7 +1,7 @@
 jenkins:
   systemMessage: >-
     This jenkins is managed by configuration as code, update <a
-    href="https://github.com/hmcts/cnp-jenkins-config-as-code/blob/master/jenkins.yaml">here</a>
+    href="https://github.com/hmcts/cnp-jenkins-config-as-code/blob/kvcreds/jenkins.yaml">here</a>
   markupFormatter:
     rawHtml:
       disableSyntaxHighlighting: false
@@ -29,16 +29,6 @@ jenkins:
   primaryView:
     all:
       name: all
-  #securityRealm:
-    #saml:
-      #binding: "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
-      #groupsAttributeName: "http://schemas.microsoft.com/ws/2008/06/identity/claims/groups"
-      #idpMetadataConfiguration:
-        #period: 15
-        #url: "https://login.microsoftonline.com/hmcts.net/FederationMetadata/2007-06/FederationMetadata.xml"
-      #maximumAuthenticationLifetime: 1209600
-      #usernameAttributeName: "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name"
-      #usernameCaseConversion: "none"
   slaveAgentPort: -1
   views:
     - buildMonitor:
@@ -71,9 +61,6 @@ unclassified:
         name: SonarQube
         serverAuthenticationToken: '${SONARCLOUD}'
         serverUrl: 'https://sonarcloud.io'
-  # slackNotifier:
-  #   teamDomain: hmcts-reform
-  #   tokenCredentialId: slack-token
 credentials:
   system:
     domainCredentials:
@@ -83,12 +70,17 @@ credentials:
               id: jenkins-reform-cnp
               username: jenkins-reform-cnp
               password: '${JENKINS_REFORM_CNP}'
-              description: CNP jenkins apo token
+              description: CNP jenkins api token
           - string:
               scope: GLOBAL
               id: slack-token
-              secret: '${SLACK_TOKEN}'
+              secret: '${slack-token}'
               description: Slack token
+          - string:
+              scope: GLOBAL
+              id: slack-token-2
+              secret: blah blah
+              description: Slack token 2
 jobs:
   - script: |
       def orgs = [

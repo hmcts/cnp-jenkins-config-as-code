@@ -19,6 +19,8 @@ Master:
     - name: CASC_JENKINS_CONFIG
       value: >-
         https://raw.githubusercontent.com/hmcts/cnp-jenkins-config-as-code/master/jenkins.yaml
+    - name: SECRETS
+      value: /kvmnt
   UsePodSecurityContext: true
   ServicePort: 8080
   ServiceType: ClusterIP
