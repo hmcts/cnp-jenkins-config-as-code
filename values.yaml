@@ -16,7 +16,11 @@ Master:
   HostNetworking: false
   UseSecurity: true
   AdminUser: admin
-  AdminPassword: "formetoknowforyoutofindout"
+  AdminPassword: formetoknowforyoutofindout
+  JavaOpts: >-
+    -Dorg.apache.commons.jelly.tags.fmt.timeZone=Europe/London
+    -Dhudson.model.DirectoryBrowserSupport.CSP=\"default-src 'self'; script-src
+    'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src data:\"
   resources:
     requests:
       cpu: "50m"

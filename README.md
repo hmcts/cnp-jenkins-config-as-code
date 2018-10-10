@@ -30,12 +30,12 @@ helm repo update
 
 export TEAM_NAME=divorce
 az aks get-credentials --resource-group cnp-aks-sandbox-rg --name cnp-aks-sandbox-cluster
-helm install --name ${TEAM_NAME}-jenkins --namespace jenkins -f values.yaml stable/jenkins
+helm install --name ${TEAM_NAME}-jenkins --namespace ${TEAM_NAME}-jenkins -f values.yaml stable/jenkins
 ```
 
 to update the config of the helm chart do:
 ```
-helm upgrade ${TEAM_NAME}-jenkins --namespace jenkins -f values.yaml stable/jenkins
+helm upgrade ${TEAM_NAME}-jenkins --namespace ${TEAM_NAME}-jenkins -f values.yaml stable/jenkins
 ```
 
 To get the jenkins logs:
